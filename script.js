@@ -24,31 +24,42 @@ const respostas = [
 ]
 
 // clicar em fazer pergunta
-function fazerPergunta() {
+const fazerPergunta = () => {
+  const valorDaPergunta = inputPergunta.value
+  const temValorVazio = valorDaPergunta == false
 
-  if(inputPergunta.value == "") {
-    alert("Digite sua pergunta")
-    return
-  }
+  if (temValorVazio)
+    return alert("Digite sua pergunta")
 
   buttonPerguntar.setAttribute("disabled", true)
 
-  const pergunta = "<div>" + inputPergunta.value + "</div>"
 
   // gerar numero aletorio
-  const  totalRespostas = respostas.length
+  const totalRespostas = respostas.length
   const numeroAleatorio = Math.floor(Math.random() * totalRespostas)
 
+  const pergunta = `<div>${valorDaPergunta}</div>`
   elementoResposta.innerHTML = pergunta + respostas[numeroAleatorio]
 
   elementoResposta.style.opacity = 1;
 
+  // zerando o input após perguntar
+  inputPergunta.value = '';
+
   // sumir a resposta depois de 3 segundos
-  setTimeout(function() {
+  setTimeout(() => {
     elementoResposta.style.opacity = 0;
     buttonPerguntar.removeAttribute("disabled")
   }, 3000)
 }
 
-//teste da function 
+//Adicionando o evento de fazer pergunta ao botão
+buttonPerguntar.addEventListener('click', fazerPergunta)
 
+// Adicionando o evento de fazer a perguntar quando apertar a tecla Enter;
+document.addEventListener('keyup', (e) => {
+  const teclaEnter = e.key === 'Enter';
+  (teclaEnter)
+    ? fazerPergunta()
+    : null;
+})
